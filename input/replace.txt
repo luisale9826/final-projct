@@ -1,0 +1,5 @@
+Marcos -> Juan
+Pedro -> Carlos
+Ana -> Sofía
+Julia -> Marta
+Laura -> Andrea

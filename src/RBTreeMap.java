@@ -1,5 +1,3 @@
-package datastructures;
-
 /**
  * Class that implements a red-black tree which implements the MyMap interface.
  * @author Brian S. Borowski

@@ -1,5 +1,3 @@
-package datastructures;
-
 /**
  * Class for an RBNode containing a key-value mapping. Each node contains a
  * reference to the left child, right child, and parent, as well as a field

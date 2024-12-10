@@ -1,5 +1,3 @@
-package datastructures;
-
 /**
  * Class for a Node containing a key-value mapping. Each node contains a
  * reference to the left child, right child, and parent.

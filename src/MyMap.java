@@ -1,5 +1,3 @@
-package datastructures;
-
 import java.util.Iterator;
 /**
  * Interface for a collection that maps keys to values.

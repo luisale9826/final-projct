@@ -1,5 +1,3 @@
-package datastructures;
-
 import java.util.Iterator;
 
 /**

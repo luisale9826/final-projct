@@ -1,4 +1,5 @@
 import java.io.BufferedReader;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 
@@ -40,7 +41,12 @@ public class WordReplacer {
         MyMap<String, String> replacementsMap = createDataStructure(dataStructureType);
 
         // Load replacement rules into the map
-        loadReplacements(replacementsFile, replacementsMap);
+        try {
+            loadReplacements(replacementsFile, replacementsMap);
+        } catch (FileNotFoundException e) {
+            // TODO: handle exception
+            System.err.println("File not found" , e);
+        }
 
         // Read the input text and replace words according to the map
         String modifiedText = processInputText(inputTextFile, replacementsMap);
@@ -75,7 +81,7 @@ public class WordReplacer {
             default:
                 System.err.println("Error: Invalid data structure '" + type + "' received.");
                 System.exit(1);
-                return null; // Unreachable code but added for completeness
+                return null;
         }
     }
 

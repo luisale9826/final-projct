@@ -4,11 +4,14 @@ import java.io.FileReader;
 import java.io.IOException;
 
 /**
- * A program that performs a global search and replace operation on an input text file
- * based on word replacement rules defined in another text file. The replacement rules are stored
+ * A program that performs a global search and replace operation on an input
+ * text file
+ * based on word replacement rules defined in another text file. The replacement
+ * rules are stored
  * in a map data structure (BSTreeMap, RBTreeMap, or MyHashMap).
  *
- * Usage: java WordReplacer <input text file> <word replacements file> <bst|rbt|hash>
+ * Usage: java WordReplacer <input text file> <word replacements file>
+ * <bst|rbt|hash>
  *
  * Author: [Your Name]
  */
@@ -44,8 +47,7 @@ public class WordReplacer {
         try {
             loadReplacements(replacementsFile, replacementsMap);
         } catch (FileNotFoundException e) {
-            // TODO: handle exception
-            System.err.println("File not found" , e);
+            System.err.println("File not found", e);
         }
 
         // Read the input text and replace words according to the map
@@ -57,6 +59,7 @@ public class WordReplacer {
 
     /**
      * Checks if a file exists.
+     * 
      * @param fileName the name of the file to check
      * @return true if the file exists, false otherwise
      */
@@ -66,7 +69,9 @@ public class WordReplacer {
     }
 
     /**
-     * Creates an instance of the specified data structure for storing word replacements.
+     * Creates an instance of the specified data structure for storing word
+     * replacements.
+     * 
      * @param type the type of data structure to create ("bst", "rbt", or "hash")
      * @return an instance of MyMap<String, String>
      */
@@ -87,21 +92,37 @@ public class WordReplacer {
 
     /**
      * Loads replacement rules from the specified file into the provided map.
-     * @param fileName the name of the file containing the replacement rules
+     * Detects and handles cycles according to the problem's requirements.
+     *
+     * @param fileName        the name of the file containing the replacement rules
      * @param replacementsMap the map to store the replacements
      */
     private static void loadReplacements(String fileName, MyMap<String, String> replacementsMap) {
         try (BufferedReader reader = new BufferedReader(new FileReader(fileName))) {
             String line;
+
+            // Process each rule in the file
             while ((line = reader.readLine()) != null) {
                 String[] parts = line.split("->");
                 if (parts.length == 2) {
                     String key = parts[0].trim();
                     String value = parts[1].trim();
-                    if (replacementsMap.get(key) != null) {
-                        System.err.println("Error: Cycle detected when trying to add replacement rule: " + key + "->" + value);
+
+                    // Detect direct cycles
+                    if (key.equals(value)) {
+                        System.err.println(
+                                "Error: Cycle detected when trying to add replacement rule: " + key + " -> " + value);
                         System.exit(1);
                     }
+
+                    // Detect transitive cycles
+                    if (createsCycle(replacementsMap, key, value)) {
+                        System.err.println(
+                                "Error: Cycle detected when trying to add replacement rule: " + key + " -> " + value);
+                        System.exit(1);
+                    }
+
+                    // Add rule to the map
                     replacementsMap.put(key, value);
                 }
             }
@@ -112,8 +133,29 @@ public class WordReplacer {
     }
 
     /**
+     * Checks if adding the replacement rule key -> value would create a cycle.
+     * The method traverses the replacement chain to detect cycles efficiently.
+     *
+     * @param map   the replacement map
+     * @param key   the key in the rule
+     * @param value the value in the rule
+     * @return true if adding the rule creates a cycle, false otherwise
+     */
+    private static boolean createsCycle(MyMap<String, String> map, String key, String value) {
+        String current = value;
+        while (current != null) {
+            if (current.equals(key)) {
+                return true; // Cycle detected
+            }
+            current = map.get(current); // Follow the chain
+        }
+        return false;
+    }
+
+    /**
      * Processes the input text, replacing words according to the replacement map.
-     * @param fileName the name of the input text file
+     * 
+     * @param fileName        the name of the input text file
      * @param replacementsMap the map containing word replacements
      * @return the modified text as a string
      */

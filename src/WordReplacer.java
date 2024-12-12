@@ -47,7 +47,7 @@ public class WordReplacer {
         try {
             loadReplacements(replacementsFile, replacementsMap);
         } catch (FileNotFoundException e) {
-            System.err.println("File not found", e);
+            System.err.println("File not found" + e);
         }
 
         // Read the input text and replace words according to the map
@@ -97,7 +97,7 @@ public class WordReplacer {
      * @param fileName        the name of the file containing the replacement rules
      * @param replacementsMap the map to store the replacements
      */
-    private static void loadReplacements(String fileName, MyMap<String, String> replacementsMap) {
+    private static void loadReplacements(String fileName, MyMap<String, String> replacementsMap) throws FileNotFoundException{
         try (BufferedReader reader = new BufferedReader(new FileReader(fileName))) {
             String line;
 
